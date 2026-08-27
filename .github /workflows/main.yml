@@ -1,0 +1,33 @@
+name: Auto Log Update (Every 20 Minutes)
+
+on:
+  schedule:
+    - cron: '*/20 * * * *'      # Every 20 minutes (00, 20, 40 each hour)
+  workflow_dispatch:            # Manual trigger
+
+permissions:
+  contents: write               # Required for push
+
+jobs:
+  update-log:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create LOG if not exists
+        run: touch LOG || true     # Creates empty LOG if missing
+
+      - name: Append timestamp to LOG
+        run: |
+          echo "[$(date '+%Y-%m-%d %H:%M:%S UTC')] Auto update (every 20 min)" >> LOG
+          git add LOG || true      # Force add even if no change
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "[Auto] Log update every 20 minutes"
+          branch: main
+          file_pattern: LOG
+          skip_dirty_check: false    # Force commit if any change (even small)
+          skip_fetch: true           # Faster
